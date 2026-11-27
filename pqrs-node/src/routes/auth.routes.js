@@ -1,0 +1,20 @@
+const express = require('express');
+const { authRequired } = require('../middlewares/auth.middleware');
+const { permissionRequired } = require('../middlewares/permission.middleware');
+const { validate } = require('../middlewares/validate.middleware');
+const { ok, asyncHandler } = require('../utils/response');
+const auth = require('../controllers/auth/auth.controller');
+const permissions = require('../controllers/auth/permissions.controller');
+const validators = require('../validators/auth.validator');
+const { sequelize } = require('../models');
+const router = express.Router();
+router.get('/health', asyncHandler(async (req, res) => {
+  await sequelize.authenticate();
+  return ok(res, { database: 'conectada', environment: process.env.NODE_ENV || 'development', uptime: Math.floor(process.uptime()) }, 'PQRS API');
+}));
+router.post('/login', validate(validators.login), auth.login);
+router.get('/me', authRequired, auth.me);
+router.get('/roles', authRequired, auth.roles);
+router.post('/select-role', authRequired, validate(validators.selectRole), auth.selectRole);
+router.get('/permissions', authRequired, permissions.getPermissions);
+module.exports = router;

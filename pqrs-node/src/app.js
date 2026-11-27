@@ -1,0 +1,27 @@
+const express = require('express');
+const helmet = require('helmet');
+const cors = require('cors');
+const morgan = require('morgan');
+const swaggerUi = require('swagger-ui-express');
+const env = require('./config/env');
+const swaggerSpec = require('./config/swagger');
+const apiRoutes = require('./routes');
+const notFound = require('./middlewares/notFound');
+const errorHandler = require('./middlewares/errorHandler');
+const { sequelize } = require('./models');
+const { ok, asyncHandler } = require('./utils/response');
+const app = express();
+app.use(helmet());
+app.use(cors({ origin: env.CORS_ORIGIN.split(',').map((origin) => origin.trim()), credentials: true }));
+app.use(morgan(env.NODE_ENV === 'production' ? 'combined' : 'dev'));
+app.use(express.json({ limit: '1mb' }));
+app.use(express.urlencoded({ extended: true }));
+app.get(`${env.API_PREFIX}/health`, asyncHandler(async (req, res) => {
+  await sequelize.authenticate();
+  return ok(res, { database:'conectada', environment:env.NODE_ENV, uptime:Math.floor(process.uptime()) }, 'PQRS API');
+}));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use(env.API_PREFIX, apiRoutes);
+app.use(notFound);
+app.use(errorHandler);
+module.exports = app;

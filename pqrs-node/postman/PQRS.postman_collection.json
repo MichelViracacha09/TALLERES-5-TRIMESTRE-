@@ -1,0 +1,45 @@
+{
+  "info": {
+    "name": "PQRS API",
+    "description": "Solicitudes de ejemplo para las partes 1, 2 y 3 del taller. Define adminPassword y token localmente; no se incluyen credenciales ni tokens.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000/api/v1" },
+    { "key": "adminPassword", "value": "" },
+    { "key": "token", "value": "" },
+    { "key": "pqrsId", "value": "1" }
+  ],
+  "item": [
+    { "name": "Auth", "item": [
+      { "name": "Login", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"{{adminPassword}}\"\n}" }, "url": "{{baseUrl}}/auth/login" } },
+      { "name": "Health", "request": { "method": "GET", "url": "{{baseUrl}}/health" } },
+      { "name": "Me", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{baseUrl}}/auth/me" } },
+      { "name": "Permissions", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{baseUrl}}/auth/permissions" } }
+    ] },
+    { "name": "Catalogs", "item": [
+      { "name": "Document types", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{baseUrl}}/catalogs/document-types" } },
+      { "name": "User statuses", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{baseUrl}}/catalogs/user-status" } },
+      { "name": "PQRS types", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{baseUrl}}/catalogs/pqrs-types" } },
+      { "name": "PQRS statuses", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{baseUrl}}/catalogs/pqrs-status" } }
+    ] },
+    { "name": "Roles", "item": [
+      { "name": "List roles", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{baseUrl}}/roles" } },
+      { "name": "Create role", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"name\": \"tester\",\n  \"description\": \"Rol de prueba\"\n}" }, "url": "{{baseUrl}}/roles" } }
+    ] },
+    { "name": "Users", "item": [
+      { "name": "List users", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{baseUrl}}/users?q=admin" } },
+      { "name": "My profile", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{baseUrl}}/profiles/me" } }
+    ] },
+    { "name": "Modules", "item": [
+      { "name": "List modules", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{baseUrl}}/modules" } }
+    ] },
+    { "name": "PQRS", "item": [
+      { "name": "List PQRS", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{baseUrl}}/pqrs?page=1&limit=20" } },
+      { "name": "Create PQRS", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"pqrs_type_id\": 1,\n  \"subject\": \"Solicitud de información\",\n  \"description\": \"Descripción de la solicitud.\"\n}" }, "url": "{{baseUrl}}/pqrs" } },
+      { "name": "Statistics", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{baseUrl}}/pqrs/stats" } },
+      { "name": "List responses", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{baseUrl}}/pqrs/{{pqrsId}}/responses" } },
+      { "name": "Create public response", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"message\": \"Respuesta pública\"\n}" }, "url": "{{baseUrl}}/pqrs/{{pqrsId}}/responses" } }
+    ] }
+  ]
+}

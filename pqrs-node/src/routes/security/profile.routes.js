@@ -1,0 +1,12 @@
+const express = require('express');
+const { authRequired } = require('../../middlewares/auth.middleware');
+const { permissionRequired } = require('../../middlewares/permission.middleware');
+const { validate } = require('../../middlewares/validate.middleware');
+const controller = require('../../controllers/security/profile.controller');
+const validator = require('../../validators/profile.validator');
+const router = express.Router();
+router.get('/me', authRequired, controller.getMe);
+router.put('/me', authRequired, validate(validator.update), controller.updateMe);
+router.get('/', authRequired, permissionRequired('Perfiles', 'view'), controller.list);
+router.get('/:id', authRequired, permissionRequired('Perfiles', 'view'), controller.get);
+module.exports = router;

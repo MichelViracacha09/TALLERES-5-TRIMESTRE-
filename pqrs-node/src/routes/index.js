@@ -1,0 +1,10 @@
+const express = require('express');
+const env = require('../config/env');
+const authRoutes = require('./auth.routes');
+const securityRoutes = require('./security');
+const pqrsRoutes = require('./pqrs/pqrs.routes');
+const router = express.Router();
+router.use('/auth', authRoutes);
+router.use('/', securityRoutes);
+router.use('/pqrs', pqrsRoutes);
+module.exports = router;
