@@ -1,0 +1,13 @@
+const express = require('express');
+const catalogRoutes = require('./catalog.routes');
+const roleRoutes = require('./role.routes');
+const userRoutes = require('./user.routes');
+const profileRoutes = require('./profile.routes');
+const moduleRoutes = require('./module.routes');
+const router = express.Router();
+router.use('/catalogs', catalogRoutes);
+router.use('/roles', roleRoutes);
+router.use('/users', userRoutes);
+router.use('/profiles', profileRoutes);
+router.use('/modules', moduleRoutes);
+module.exports = router;

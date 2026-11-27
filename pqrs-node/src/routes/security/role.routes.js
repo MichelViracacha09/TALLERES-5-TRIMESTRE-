@@ -1,0 +1,16 @@
+const express = require('express');
+const { authRequired } = require('../../middlewares/auth.middleware');
+const { permissionRequired } = require('../../middlewares/permission.middleware');
+const { validate } = require('../../middlewares/validate.middleware');
+const controller = require('../../controllers/security/role.controller');
+const validators = require('../../validators/role.validator');
+const router = express.Router();
+router.get('/', authRequired, permissionRequired('Roles', 'view'), controller.list);
+router.post('/', authRequired, permissionRequired('Roles', 'create'), validate(validators.create), controller.create);
+router.get('/:id/permissions', authRequired, permissionRequired('Roles', 'view'), controller.getPermissions);
+router.post('/:id/permissions', authRequired, permissionRequired('Roles', 'edit'), validate(validators.permission), controller.addPermission);
+router.delete('/:id/permissions/:rmpId', authRequired, permissionRequired('Roles', 'edit'), controller.removePermission);
+router.get('/:id', authRequired, permissionRequired('Roles', 'view'), controller.get);
+router.put('/:id', authRequired, permissionRequired('Roles', 'edit'), validate(validators.update), controller.update);
+router.delete('/:id', authRequired, permissionRequired('Roles', 'delete'), controller.deleteRole);
+module.exports = router;
