@@ -1,0 +1,10 @@
+{
+  "name": "api-productos-json",
+  "version": "1.0.0",
+  "private": true,
+  "description": "API REST de productos con persistencia en archivo JSON",
+  "main": "server.js",
+  "scripts": { "start": "node server.js", "dev": "nodemon server.js" },
+  "dependencies": { "express": "^4.21.2" },
+  "devDependencies": { "nodemon": "^3.1.9" }
+}
